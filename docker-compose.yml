@@ -1,0 +1,39 @@
+version: '3'
+services: 
+  web_1:
+    container_name: laravel_umarche
+    build: ./web_umarche
+    depends_on: 
+      - db
+    volumes: 
+      - ./html/:/var/www/html/
+      - ./web_umarche/default.conf:/etc/apache2/sites-enabled/000-default.conf
+    ports: 
+      - "8005:80"
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+     - PMA_ARBITRARY=1
+     - PMA_HOST=db:3306
+     - PMA_USER=root
+     - PMA_PASSWORD=rootroot
+  db:
+    container_name: mysql
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    environment:
+      MYSQL_DATABASE: laravel_umarche
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: rootroot
+      TZ: Asia/Tokyo
+    ports: 
+      - "3311:3306"
+    volumes: 
+      - umarche_laravel:/var/lib/mysql
+volumes: 
+  umarche_laravel: {}
