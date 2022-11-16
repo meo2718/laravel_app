@@ -6,7 +6,7 @@ services:
     depends_on: 
       - db
     volumes: 
-      - ./html/:/var/www/html/
+      - ./umarche/:/var/www/html/
       - ./web_umarche/default.conf:/etc/apache2/sites-enabled/000-default.conf
     ports: 
       - "8005:80"
