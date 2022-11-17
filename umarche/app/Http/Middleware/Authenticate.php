@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 
 class Authenticate extends Middleware
-{   //RouteServiceProviderでuser.などは定義済
+{   //RouteServiceProviderのasでuser.などは定義済
     protected $user_route = 'user.login';
     protected $owner_route = 'owner.login';
     protected $admin_route = 'admin.login';
