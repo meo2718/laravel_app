@@ -23,7 +23,7 @@ class Authenticate extends Middleware
                 //$this->で上のプロパティ呼び出し
                 return route($this->owner_route);
                 //admin関連のURLでなかったらadminへ飛ばす
-            } elseif(Route::id('admin*')){
+            } elseif(Route::id('admin.*')){
                 return route($this->admin_route);
                 //ownerでもadminでもなかったらユーザーへ飛ばす
             } else {
