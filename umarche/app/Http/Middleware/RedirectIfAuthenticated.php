@@ -8,10 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
-{   //config/appで定義
-    private const GUARD_USER = 'users';
-    private const GUARD_ADMIN = 'admin';
-    private const GUARD_OWNER = 'owners';
+{
     /**
      * Handle an incoming request.
      *
@@ -22,25 +19,12 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
-        // $guards = empty($guards) ? [null] : $guards;
-        // //Authのガードでチェックしてログインしてたらリダイレクト
-        // foreach ($guards as $guard) {
-        //     if (Auth::guard($guard)->check()) {
-        //         return redirect(RouteServiceProvider::HOME);
-        //     }
-        // }
+        $guards = empty($guards) ? [null] : $guards;
 
-        //もしuserとして認証してるか、またはuser関連のURLなら
-        if(Auth::guard(self::GUARD_USER)->check()&& $request->routeIs('user.*')){
-            return redirect(RouteServiceProvider::HOME);
-        }
-
-        if(Auth::guard(self::GUARD_ADMIN)->check()&& $request->routeIs('admin.*')){
-            return redirect(RouteServiceProvider::ADMIN_HOME);
-        }
-
-        if(Auth::guard(self::GUARD_OWNER)->check()&& $request->routeIs('owner.*')){
-            return redirect(RouteServiceProvider::OWNER_HOME);
+        foreach ($guards as $guard) {
+            if (Auth::guard($guard)->check()) {
+                return redirect(RouteServiceProvider::HOME);
+            }
         }
 
         return $next($request);
