@@ -22,11 +22,13 @@ use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //prefix設定
+    return view('admin.welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    //prefix設定
+    return view('admin.dashboard');
     //guard権限:を付与、→adminの権限を持ってたらダッシュボードへ
 })->middleware(['auth:admin'])->name('dashboard');
 

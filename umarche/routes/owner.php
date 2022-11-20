@@ -22,11 +22,13 @@ use App\Http\Controllers\Owner\Auth\VerifyEmailController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //prefix設定
+    return view('owner.welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    //prefix設定
+    return view('owner.dashboard');
     //guard権限:を付与、→ownersの権限を持ってたらダッシュボードへ
 })->middleware(['auth:owners'])->name('dashboard');
 
