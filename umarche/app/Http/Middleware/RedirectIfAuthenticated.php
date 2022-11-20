@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class RedirectIfAuthenticated
 {
-    //config/appで定義
+    //config/authで定義
     private const GUARD_USER = 'users';
     private const GUARD_ADMIN = 'admin';
     private const GUARD_OWNER = 'owners';
