@@ -27,7 +27,8 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+    //guard権限:を付与、→ownersの権限を持ってたらダッシュボードへ
+})->middleware(['auth:owners'])->name('dashboard');
 
 
 Route::middleware('guest')->group(function () {
@@ -53,8 +54,8 @@ Route::middleware('guest')->group(function () {
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.update');
 });
-
-Route::middleware('auth')->group(function () {
+//guard権限の付与
+Route::middleware('auth:owners')->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->name('verification.notice');
 

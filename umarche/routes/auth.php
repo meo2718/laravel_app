@@ -33,8 +33,8 @@ Route::middleware('guest')->group(function () {
     Route::post('reset-password', [NewPasswordController::class, 'store'])
                 ->name('password.update');
 });
-
-Route::middleware('auth')->group(function () {
+//guard権限:を付与、→usersの権限を持ってたらダッシュボードへ
+Route::middleware('auth:users')->group(function () {
     Route::get('verify-email', [EmailVerificationPromptController::class, '__invoke'])
                 ->name('verification.notice');
 
