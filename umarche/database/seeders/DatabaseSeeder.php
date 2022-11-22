@@ -13,6 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        //DatabaseSeederクラス内で、callメソッドを使用して追加したシードクラスを実行する
         // \App\Models\User::factory(10)->create();
+        $this->call([
+            AdminSeeder::class,
+            OwnerSeeder::class,
+        ]);
     }
 }
