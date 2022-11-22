@@ -15,11 +15,13 @@ use App\Http\Controllers\LifeCycleTestController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //prefix設定
+    return view('user.welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    //prefix設定
+    return view('user.dashboard');
     //guard権限:を付与、→usersの権限を持ってたらダッシュボードへ
 })->middleware(['auth:users'])->name('dashboard');
 
