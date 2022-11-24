@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\Auth\NewPasswordController;
 use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
-
+use App\Http\Controllers\Admin\OwnersController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -25,6 +25,10 @@ Route::get('/', function () {
     //prefix設定
     return view('admin.welcome');
 });
+
+Route::resource('owners', OwnersController::class)
+//adminで認証していたらで表示
+->middleware('auth:admin'); 
 
 Route::get('/dashboard', function () {
     //prefix設定
