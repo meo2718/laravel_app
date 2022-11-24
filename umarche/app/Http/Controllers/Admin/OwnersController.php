@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Owner; //Eloquent
 use Illuminate\Support\Facades\DB; //クエリビルダ
+use Carbon\Carbon;
 class OwnersController extends Controller
 {
     /**
@@ -23,22 +24,28 @@ class OwnersController extends Controller
 
     public function index()
     {
+        $date_now = Carbon::now()->year;
+        $date_parse = Carbon::parse(now());
+        echo $date_now;
+        echo $date_parse;
+
         //Illuminate\Database\Eloquent\Collection
         $eloquent = Owner::all();
 
         //Illuminate\Support\Collection 
-        $queryBuilder = DB::table('owners')->select('name')->get();
+        $queryBuilder = DB::table('owners')->select('name','created_at')->get();
 
         //object(stdClass)#1516 (1) { ["name"]=> string(3) "meo" }
         $queryBuilder_first = DB::table('owners')->select('name')->first();
 
         //Illuminate\Support\Collection 
-        $collection = collect([
-            'name' => 'てすと'
-        ]);
+        // $collection = collect([
+        //     'name' => 'てすと'
+        // ]);
 
-        var_dump($queryBuilder_first);
-        dd($eloquent,$queryBuilder,$queryBuilder_first,$collection);
+        // var_dump($queryBuilder_first);
+        // dd($eloquent,$queryBuilder,$queryBuilder_first,$collection);
+        return view('admin.owners.index', compact('eloquent', 'queryBuilder'));
     }
 
     /**
