@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
+use App\Models\Owner; //Eloquent
+use Illuminate\Support\Facades\DB; //クエリビルダ
 class OwnersController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     * laravelでデータを扱う際にはcollectionを使うことが多い
+     * →support,eloquentの2種類あるddを使ってデータの型を見ていく
      */
     //コンストラクタでミドルウェアを設定しadminで認証していた場合実行する
     public function __construct()
@@ -20,7 +23,22 @@ class OwnersController extends Controller
 
     public function index()
     {
-        dd('owner一覧画面');
+        //Illuminate\Database\Eloquent\Collection
+        $eloquent = Owner::all();
+
+        //Illuminate\Support\Collection 
+        $queryBuilder = DB::table('owners')->select('name')->get();
+
+        //object(stdClass)#1516 (1) { ["name"]=> string(3) "meo" }
+        $queryBuilder_first = DB::table('owners')->select('name')->first();
+
+        //Illuminate\Support\Collection 
+        $collection = collect([
+            'name' => 'てすと'
+        ]);
+
+        var_dump($queryBuilder_first);
+        dd($eloquent,$queryBuilder,$queryBuilder_first,$collection);
     }
 
     /**
