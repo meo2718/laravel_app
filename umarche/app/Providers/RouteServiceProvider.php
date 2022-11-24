@@ -51,7 +51,7 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
             //ヘルパ関数base_pathでroutes/api.phpのすべてのURLにapiがつく
                 ->group(base_path('routes/api.php'));
-            
+
             //prefix('/')でownerやadminがついてないURLは/へ遷移させる
             Route::prefix('/')
             //asをつけることで別名にできる'/'→'user.'に変わる
@@ -59,14 +59,14 @@ class RouteServiceProvider extends ServiceProvider
                 ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
-           
+            
             //owner用
             Route::prefix('owner')
                 ->as('owner.')
                 ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/owner.php'));
-            
+
             //admin用
             Route::prefix('admin')
                 ->as('admin.')
