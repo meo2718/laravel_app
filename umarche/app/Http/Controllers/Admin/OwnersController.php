@@ -81,7 +81,7 @@ class OwnersController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password), //Hash::makeで暗号化
         ]);
-        return redirect()->route('admin.owners.index');
+        return redirect()->route('admin.owners.index')->with('message', 'オーナーを登録できました。');
     }
 
     /**
