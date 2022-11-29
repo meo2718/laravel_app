@@ -46,7 +46,8 @@ class OwnersController extends Controller
 
         // var_dump($queryBuilder_first);
         // dd($eloquent,$queryBuilder,$queryBuilder_first,$collection);
-        $owners = Owner::select('name','email','created_at')->get();
+        $owners = Owner::all();
+        // $owners = Owner::select('name','email','created_at','id')->get();
         return view('admin.owners.index', compact('owners'));
     }
 
@@ -103,7 +104,11 @@ class OwnersController extends Controller
      */
     public function edit($id)
     {
-        //
+        // $owner = Owner::findOrFail($id);
+        // return view('admin.owners.edit', compact('owner'));
+
+        $this->viewData['owner'] = Owner::findOrFail($id);
+        return view('admin.owners.edit', $this->viewData);
     }
 
     /**
