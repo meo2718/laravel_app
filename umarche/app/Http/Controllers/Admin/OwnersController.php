@@ -46,7 +46,8 @@ class OwnersController extends Controller
 
         // var_dump($queryBuilder_first);
         // dd($eloquent,$queryBuilder,$queryBuilder_first,$collection);
-        $owners = Owner::select('name','email','created_at')->get();
+        $owners = Owner::all();
+        // $owners = Owner::select('name','email','created_at','id')->get();
         return view('admin.owners.index', compact('owners'));
     }
 
@@ -81,7 +82,7 @@ class OwnersController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password), //Hash::makeで暗号化
         ]);
-        return redirect()->route('admin.owners.index');
+        return redirect()->route('admin.owners.index')->with(['message' => 'オーナーを登録できました。','status'=>'info']);
     }
 
     /**
@@ -103,7 +104,11 @@ class OwnersController extends Controller
      */
     public function edit($id)
     {
-        //
+        // $owner = Owner::findOrFail($id);
+        // return view('admin.owners.edit', compact('owner'));
+
+        $this->viewData['owner'] = Owner::findOrFail($id);
+        return view('admin.owners.edit', $this->viewData);
     }
 
     /**
@@ -115,7 +120,13 @@ class OwnersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $owner = Owner::findOrFail($id);
+        $owner->name = $request->name;
+        $owner->email = $request->email;
+        $owner->password = Hash::make($request->password);
+        $owner->save();
+
+        return redirect()->route('admin.owners.index')->with(['message' => 'オーナー情報を更新しました。','status'=>'info']);
     }
 
     /**
@@ -126,6 +137,7 @@ class OwnersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Owner::findOrFail($id)->delete();
+        return redirect()->route('admin.owners.index')->with(['message' => 'オーナー情報を削除しました。','status'=>'alert']);
     }
 }
