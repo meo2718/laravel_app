@@ -21,14 +21,21 @@ use App\Http\Controllers\Admin\OwnersController;
 |
 */
 
-Route::get('/', function () {
-    //prefix設定
-    return view('admin.welcome');
-});
+// Route::get('/', function () {
+//     //prefix設定
+//     return view('admin.welcome');
+// });
 
 Route::resource('owners', OwnersController::class)
 //adminで認証していたらで表示
-->middleware('auth:admin'); 
+->middleware('auth:admin')->except('show');
+
+//期限切れオーナー
+Route::prefix('expired-owners')-> 
+    middleware('auth:admin')->group(function(){
+        Route::get('index', [OwnersController::class, 'expiredOwnerIndex'])->name('expired-owners.index');
+        Route::post('destroy/{owner}', [OwnersController::class, 'expiredOwnerDestroy'])->name('expired-owners.destroy');
+});
 
 Route::get('/dashboard', function () {
     //prefix設定
