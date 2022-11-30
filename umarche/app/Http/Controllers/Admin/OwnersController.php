@@ -48,7 +48,7 @@ class OwnersController extends Controller
         // dd($eloquent,$queryBuilder,$queryBuilder_first,$collection);
         //$owners = Owner::all();
          $owners = Owner::select('name','email','created_at','id')->paginate(3);
-        return view('admin.owners.index', compact('owners'));
+         return view('admin.owners.index', compact('owners'));
     }
 
     /**
@@ -139,5 +139,24 @@ class OwnersController extends Controller
     {
         Owner::findOrFail($id)->delete();
         return redirect()->route('admin.owners.index')->with(['message' => 'オーナー情報を削除しました。','status'=>'alert']);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     * 期限切れオーナー削除
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+
+     public function expiredOwnerIndex()
+    {
+        $expiredOwners = Owner::onlyTrashed()->get();
+        return view('admin.expired-owners',compact('expiredOwners'));
+    }
+    
+    public function expiredOwnerDestroy($id)
+    {
+        Owner::onlyTrashed()->findOrFail($id)->forceDelete();
+        return redirect()->route('admin.expired-owners.index')->with(['message' => 'オーナー情報を完全に削除しました。','status'=>'alert']);
     }
 }
