@@ -28,7 +28,7 @@ use App\Http\Controllers\Admin\OwnersController;
 
 Route::resource('owners', OwnersController::class)
 //adminで認証していたらで表示
-->middleware('auth:admin');
+->middleware('auth:admin')->except('show');
 
 //期限切れオーナー
 Route::prefix('expired-owners')-> 
