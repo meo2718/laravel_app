@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Owner; //Eloquent
+use App\Models\Shop;
+use App\Services\Owner\OwnerService;
 use Illuminate\Support\Facades\DB; //クエリビルダ
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Throwable;
+use Illuminate\Support\Facades\Log;
+
 class OwnersController extends Controller
 {
     /**
@@ -77,12 +82,12 @@ class OwnersController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:owners'],
             'password' => ['required', 'string', 'confirmed', 'min:8'],
         ]);
-        Owner::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password), //Hash::makeで暗号化
-        ]);
+        $result = OwnerService::addByOwner($request);
+        if(is_string($result)){
+            return back();
+        }
         return redirect()->route('admin.owners.index')->with(['message' => 'オーナーを登録できました。','status'=>'info']);
+    
     }
 
     /**
