@@ -15,7 +15,8 @@ class CreateShopsTable extends Migration
     {
         Schema::create('shops', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('owner_id')->constrained();
+            //Owner->Shop と 外部キー制約を設定しているため 追加設定が必要。
+            $table->foreignId('owner_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->string('name');
             $table->text('information');
             $table->string('filename');
