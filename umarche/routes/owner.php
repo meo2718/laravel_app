@@ -26,7 +26,7 @@ Route::get('/', function () {
     //prefix設定
     return view('owner.welcome');
 });
-
+//shopのルート
 Route::prefix('shops')-> 
     middleware('auth:owners')->group(function(){
         Route::get('index', [ShopController::class, 'index'])->name('shops.index');
