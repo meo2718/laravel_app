@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
+use Illuminate\Support\Facades\Storage;
 
 class ShopController extends Controller
 {
@@ -48,15 +49,38 @@ class ShopController extends Controller
         $this->viewData['shops'] = Shop::where('owner_id', Auth::id())->get();
         return view('owner.shops.index', $this->viewData);
     }
-
-    public function edit($id)
+    /**
+     * shop画像アップロード画面遷移+更新
+     * @param $request
+     * @param $id
+     */
+    public function edit(Request $request, $id)
     {
-        //dd(Shop::findOrFail($id));
-
+        if($request->isMethod('get')){
+          $this->viewData['shop'] = Shop::findOrFail($id);
+          return view('owner.shops.edit', $this->viewData);
+        }
+        if($request->isMethod('post')){
+            //$request->imageでname属性を取得することで画像を取得できる
+            $imageFile = $request->image;
+            //画像がnullでなかったら && isValidでアップロードできたか判定
+            if(!is_null($imageFile) && $imageFile->isValid()){
+                //storageファサードのputFileメソッドでstorage配下のshopsフォルダ内に保存処理を行う
+                Storage::putFile('public/shops', $imageFile);
+            }
+        }
+        return redirect()->route('owner.shops.index');
     }
 
-    public function update(Request $request, $id)
-    {
-
-    }
+    // public function edit($id){
+    //     $this->viewData['shop'] = Shop::findOrFail($id);
+    //       return view('owner.shops.edit', $this->viewData);
+    // }
+    // public function update(Request $request,$id){
+    //         $imageFile = $request->image;
+    //         if(!is_null($imageFile) && $imageFile->isValid()){
+    //             Storage::putFile('public/shops', $imageFile);
+    //         }
+    //         return redirect()->route('owner.shops.index');
+    // }
 }
