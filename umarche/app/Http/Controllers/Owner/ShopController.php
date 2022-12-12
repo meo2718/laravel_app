@@ -43,10 +43,9 @@ class ShopController extends Controller
     public function index()
     {
         //ログインしているオーナーのIDを取得
-        $ownerId = Auth::id();
+        //$ownerId = Auth::id();
         //１人のownerが複数のshopをもちたいので、owner_idをログインしている$ownerIDでwhereで検索してgetすればよい
-
-        $this->viewData['shops'] = Shop::where('owner_id', $ownerId)->get();
+        $this->viewData['shops'] = Shop::where('owner_id', Auth::id())->get();
         return view('owner.shops.index', $this->viewData);
     }
 
