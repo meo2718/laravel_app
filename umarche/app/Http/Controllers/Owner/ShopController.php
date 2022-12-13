@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
 use Illuminate\Support\Facades\Storage;
 use InterventionImage;
+use App\Http\Requests\UploadImageRequest;
 
 class ShopController extends Controller
 {
@@ -54,7 +55,7 @@ class ShopController extends Controller
      * @param $request
      * @param $id
      */
-    public function edit(Request $request, $id)
+    public function edit( UploadImageRequest $request, $id)
     {
         if($request->isMethod('get')){
           $this->viewData['shop'] = Shop::findOrFail($id);
@@ -77,7 +78,7 @@ class ShopController extends Controller
                 $fileNameToStore = $fileName. '.' . $extension;
                 //makeで使えるようにして必要な値として$imageFile→resizeでサイズ指定してencodeする
                 $resizedImage = InterventionImage::make($imageFile)->resize(1920, 1080)->encode();
-                dd($imageFile,$resizedImage);
+                //dd($imageFile,$resizedImage);
 
                 //保存処理
                 //Storage::putFileではFileオブジェクトを想定しており、InterventionImageでresizeすると
