@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\Auth;
 use App\Models\Shop;
 use Illuminate\Support\Facades\Storage;
+use InterventionImage;
 
 class ShopController extends Controller
 {
@@ -66,7 +66,24 @@ class ShopController extends Controller
             //画像がnullでなかったら && isValidでアップロードできたか判定
             if(!is_null($imageFile) && $imageFile->isValid()){
                 //storageファサードのputFileメソッドでstorage配下のshopsフォルダ内に保存処理を行う
-                Storage::putFile('public/shops', $imageFile);
+                //Storage::putFile('public/shops', $imageFile);リサイズなしの場合
+                
+                //uniqidを生成し、rand関数で重複しないランダムなファイル名を作成
+                $fileName = uniqid(rand().'_');
+                //dd($fileName);
+                //アップロードしてきた画像$imageFileのextensionで拡張子を取得
+                $extension = $imageFile->extension();
+                //作成したファイル名と拡張子をくっつける
+                $fileNameToStore = $fileName. '.' . $extension;
+                //makeで使えるようにして必要な値として$imageFile→resizeでサイズ指定してencodeする
+                $resizedImage = InterventionImage::make($imageFile)->resize(1920, 1080)->encode();
+                dd($imageFile,$resizedImage);
+
+                //保存処理
+                //Storage::putFileではFileオブジェクトを想定しており、InterventionImageでresizeすると
+                //画像として扱われ、型が変わるのでStorage::putで保存する必要がある。
+                //フォルダがない場合→自動生成。ファイル名は指定する必要がある。
+                Storage::put('public/shops/' . $fileNameToStore, $resizedImage );
             }
         }
         return redirect()->route('owner.shops.index');
