@@ -24,15 +24,17 @@
                     @endif
                    </div>
                     <div class="text-xl">{{ $shop->name }}</div>
-                    {{-- filename(画像)が空だったらnoimageを表示する。入っていたらその画像を表示する --}}
-                    <div>
+                    <x-shop-thumbnail />
+                    
+                    {{-- filename(画像)が空だったらnoimageを表示する。入っていたらその画像を表示する→コンポーネント化する --}}
+                    {{-- <div>
                         @if(empty($shop->filename))
                           <img src="{{ asset('images/no_images.jpg')}}">
                         @else
-                        {{-- 画像アップロード先PATH --}}
+                        画像アップロード先PATH
                           <img src="{{ asset('storage/shops/' . $shop -> filename)}}">
                         @endif
-                    </div>
+                    </div> --}}
                    </a>
                 </div>
                   @endforeach
