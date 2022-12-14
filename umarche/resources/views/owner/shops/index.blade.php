@@ -9,6 +9,7 @@
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
           <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
               <div class="p-6 bg-white border-b border-gray-200">
+                <x-flash-message status="session('status')"></x-flash-message>
                   @foreach ($shops as $shop)
                   <div class="w-1/2 p-4">
                   {{-- クリックしたらedit画面に飛ぶようにする --}}
@@ -24,7 +25,7 @@
                     @endif
                    </div>
                     <div class="text-xl">{{ $shop->name }}</div>
-                    <x-shop-thumbnail />
+                    <x-shop-thumbnail :filename="$shop->filename"/>
                     
                     {{-- filename(画像)が空だったらnoimageを表示する。入っていたらその画像を表示する→コンポーネント化する --}}
                     {{-- <div>
