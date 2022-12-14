@@ -76,9 +76,11 @@ class ShopController extends Controller
               $fileNameToStore = ImageService::addByImage($imageFile, 'shops');    
             }
             $shop = Shop::findOrFail($id);
+            //$request->nameフォームから入ってくる値
             $shop->name = $request->name;
             $shop->information = $request->information;
             $shop->is_selling = $request->is_selling;
+            //画像があったら作成したファイル名を保存する
             if(!is_null($imageFile) && $imageFile->isValid()){
               $shop->filename=$fileNameToStore;
             }
