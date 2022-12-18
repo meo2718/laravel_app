@@ -5,6 +5,8 @@ RUN apt update \
 RUN docker-php-ext-install pdo pdo_mysql
 WORKDIR /var/www/html
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN pecl install xdebug \
+    && docker-php-ext-enable xdebug
 RUN curl -fsSL https://deb.nodesource.com/setup_lts.x | bash - \
     && apt-get install -y nodejs \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \

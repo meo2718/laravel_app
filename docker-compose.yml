@@ -8,6 +8,7 @@ services:
     volumes: 
       - ./umarche/:/var/www/html/
       - ./web_umarche/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      - ./web_umarche/php.ini:/usr/local/etc/php/php.ini
     ports: 
       - "8005:80"
   phpmyadmin:
