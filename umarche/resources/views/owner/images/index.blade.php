@@ -17,16 +17,17 @@
                 </div>
                 <div class="flex flex-wrap">
                   @foreach ($images as $image)
-                  {{-- 1/4で表示 --}}
-                  <div class="w-1/4 p-4">
+                  {{-- 1/4で表示 レスポンシブでスマホの場合p-2,タブレットだったらp-4--}}
+                  <div class="w-1/4 p-2 md:p-4">
                   {{-- クリックしたらedit画面に飛ぶようにする --}}
                    <a href="{{route('owner.images.edit',['image'=>$image->id])}}">
                     {{-- 角をとったパディング上下左右4方向にボーダーをいれる --}}
-                   <div class="border rounded-md p-4">
+                   <div class="border rounded-md p-2 md:p-4">
                     
-                      <div class="text-xl">{{ $image->title }}</div>
-                      {{-- productフォルダの中に保存するのでtypeで属性をつける --}}
+                      {{-- 画像アップロードのサムネイルのコンポーネント→productフォルダの中に保存するのでtypeで属性をつける --}}
                       <x-thumbnail :filename="$image->filename" type="products" />
+                      {{-- imageのタイトル表示 --}}
+                      <div class="text-gray-700">{{ $image->title }}</div>
                    </div>
                    </a>
                   </div>
