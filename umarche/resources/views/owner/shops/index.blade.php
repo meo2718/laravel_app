@@ -25,7 +25,7 @@
                     @endif
                    </div>
                     <div class="text-xl">{{ $shop->name }}</div>
-                    <x-shop-thumbnail :filename="$shop->filename"/>
+                    <x-thumbnail :filename="$shop->filename" type="shops" />
                     
                     {{-- filename(画像)が空だったらnoimageを表示する。入っていたらその画像を表示する→コンポーネント化する --}}
                     {{-- <div>
