@@ -57,7 +57,9 @@ class ImageController extends Controller
     {
         //create.blade側のinputのname属性filesを引数とすることで、複数の画像を配列形式で取得
         $imageFiles = $request->file('files');
-        if(!is_null($imageFiles)){
+        if(is_null($imageFiles)){
+            return redirect()->route('owner.images.create')->with(['message' => 'ファイルを選択してください。','status'=>'info']);
+        }elseif(!is_null($imageFiles)){
             //foreachで1つずつImageServiceでファイル名作る→拡張子取得→interventionImageでリサイズ
             //出来上がったファイル名を$fileNameToStoreとして取得し、createで保存
             foreach($imageFiles as $imageFile){

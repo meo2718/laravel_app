@@ -23,10 +23,11 @@ class UploadImageRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'image' => 'image|mimes:jpg,jpeg,png|max:2048',
-            'files[].*.[image]' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+        $rules = [
+            'image' => ['image','mimes:jpg,jpeg,png','max:2048'],
+            'files.*.image' => ['image','mimes:jpg,jpeg,png','max:2048'],
         ];
+        return $rules;
     }
 
     public function messages() {
