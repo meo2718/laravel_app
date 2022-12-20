@@ -11,6 +11,7 @@ use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\Auth\VerifyEmailController;
 use App\Http\Controllers\Owner\ShopController;
 use App\Http\Controllers\Owner\ImageController;
+use App\Http\Controllers\Owner\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,6 +38,11 @@ Route::prefix('shops')->
 });
 //imageのルート(resource)
 Route::resource('images', ImageController::class)
+//adminで認証していたらで表示
+->middleware('auth:owners')->except('show');
+
+//productのルート(resource)
+Route::resource('products', ProductController::class)
 //adminで認証していたらで表示
 ->middleware('auth:owners')->except('show');
 
