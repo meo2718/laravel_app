@@ -4,17 +4,48 @@ namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Product;
+use App\Models\SecondaryCategory;
+use App\Models\Owner;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:owners'); 
+
+        $this->middleware(function ($request, $next) {
+            $id = $request->route()->parameter('product');
+            if(!is_null($id)){
+            $productsOwnerId = Product::findOrFail($id)->shop->owner->id;
+              $productId = (int)$productsOwnerId;
+              if($productId !== Auth::id()){
+              abort(404);
+              }
+            }
+            return $next($request);
+        });
+    }
     /**
      * Display a listing of the resource.
-     *
+     * ログインしている
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+        //Auth::id()を引数とすることでログインしているowner_idをとれる。shopを経由してproductへリレーション
+        //することで、ログインしているownerのproductを取得できる。
+
+        //$this->viewData['products'] = Owner::findOrFail(Auth::id())->shop->product;
+        $this->viewData['ownerInfo'] = Owner::with('shop.product.imageFirst') ->where('id', Auth::id())->get();
+        // foreach($ownerInfo as $owner)
+        // //dd($owner->shop->product);
+        //  foreach($owner->shop->product as $product)
+        //  {
+        //     dd($product->imageFirst->filename);
+        //  }
+        return view('owner.products.index', $this->viewData);
     }
 
     /**
