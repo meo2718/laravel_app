@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Shop;
 use App\Models\Image;
+use App\Models\Stock;
 use App\Models\SecondaryCategory;
 
 class Product extends Model
@@ -23,5 +24,9 @@ class Product extends Model
     public function category()
     {   //productはsecondaryCategoryに属する。メソッド名を変えたので外部キーもかく
         return $this->belongsTo(SecondaryCategory::class,'secondary_category_id');
+    }
+    public function stock()
+    {   //1つのproductが複数のStockをもつ
+        return $this->hasMany(Stock::class);
     }
 }
