@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Owner;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
-use App\Models\SecondaryCategory;
+use App\Models\PrimaryCategory;
 use App\Models\Owner;
+use App\Models\Shop;
+use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -55,7 +57,14 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        //1つのshop,image,categoryは複数のproductをもつのでFKを３つ定義してるのでそれをかく
+        //owner_idのAUTHで絞りつつ、それぞれselectする
+        $shops = Shop::where('owner_id', Auth::id())->select('id', 'name')->get();
+        //orderByで新しい順に並び替え
+        $images = Image::where('owner_id', Auth::id())->select('id', 'title', 'filename')->orderBy('updated_at', 'desc')->get();
+        //リレーション先のprimaryCategoryからとるのでN+1問題回避,secondaryというのはprimarycategoryモデルのメソッド
+        $categories = PrimaryCategory::with('secondary') ->get();
+        return view('owner.products.create', compact('shops', 'images', 'categories'));
     }
 
     /**

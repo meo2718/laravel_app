@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use APP\Models\SecondaryCategory;
+use App\Models\SecondaryCategory;
 
 class PrimaryCategory extends Model
 {
