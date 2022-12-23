@@ -9,7 +9,7 @@ if($name === 'image5'){ $modal = 'modal-5'; }
 @endphp
 {{-- id=“modal-1” となっている箇所を {{ $modal }} に置き換える --}}
 <div class="modal micromodal-slide" id="{{ $modal }}" aria-hidden="true">
-  <div class="modal__overlay" tabindex="-1" data-micromodal-close>
+  <div class="modal__overlay z-50" tabindex="-1" data-micromodal-close>
     <div class="modal__container" role="dialog" aria-modal="true" aria-labelledby="{{ $modal }}-title">
       <header class="modal__header">
         <h2 class="text-xl text-fuchsia-700" id="{{ $modal }}-title">
@@ -49,7 +49,7 @@ if($name === 'image5'){ $modal = 'modal-5'; }
 </div>
 {{-- モーダルを表示するためのボタンを追加 --}}
 <div class="flex justify-around items-center mb-4">
-  <a data-micromodal-trigger="{{$modal}}" href='javascript:;'>ファイルを選択</a>
+  <a class="py-2 px-4 bg-gray-200" data-micromodal-trigger="{{ $modal }}" href='javascript:;'>ファイルを選択</a>
   <div class="w-1/4">
     {{-- $nameにimage1,2,3,4 がはいってくる --}}
     <img id="{{$name}}_thumbnail" src="">
