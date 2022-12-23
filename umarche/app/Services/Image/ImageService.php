@@ -18,7 +18,7 @@ Class ImageService
     $extension = $file->extension();
     $fileNameToStore = $fileName. '.' . $extension;
     //配列だった場合、$imageFile['image']としてるのでリサイズ可能
-    $resizedImage = InterventionImage::make($file)->resize(1920, 1080)->encode();  
+    $resizedImage = InterventionImage::make($file)->resize(1280, 1280)->encode();  
     Storage::put('public/'. $folderName . '/' . $fileNameToStore, $resizedImage );
 
     return $fileNameToStore;

@@ -15,7 +15,6 @@
                   <form method="post" action="{{ route('owner.products.store')}}">
                     @csrf
                       <div class="-m-2">
-
                         {{-- カテゴリー一覧 --}}
                         <div class="p-2 w-1/2 mx-auto">
                           <div class="relative">
@@ -36,10 +35,14 @@
                             </select>
                           </div>
                         </div>
-                       {{-- product新規作成時、画像を4枚選択できるようにする --}}
-                       <x-select-image name="image1" />
+                       {{-- product新規作成時、画像を5枚選択できるようにする 画像一覧→コントローラからコンポーネントへ:images="$images"--}}
+                       <x-select-image :images="$images" name="image1" />
+                       <x-select-image :images="$images" name="image2" />
+                       <x-select-image :images="$images" name="image3" />
+                       <x-select-image :images="$images" name="image4" />
+                       <x-select-image :images="$images" name="image5" />
                         <div class="p-2 w-full flex justify-around mt-4">
-                          <button type="button" onclick="location.href='{{ route('owner.products.index') }}'" class="bg-gray-200 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg">戻る</button>
+                          <button type="button" onclick="location.href='{{ route('owner.products.index')}}'" class="bg-gray-200 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg">戻る</button>
                           <button type="submit" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録する</button>
                         </div>
                     </div>
@@ -48,4 +51,23 @@
           </div>
       </div>
   </div>
+  <script>
+    'use strict'
+    // .imageとついてるクラスをすべて取得
+    const images = document.querySelectorAll('.image')
+    
+    images.forEach( image =>  {
+      // clickしたらコンポーネント側のimgタグのdata-○○と設定していた箇所をそれぞれ変数へいれる
+      image.addEventListener('click', function(e){
+        const imageName = e.target.dataset.id.substr(0, 6)
+        const imageId = e.target.dataset.id.replace(imageName + '_', '')
+        const imageFile = e.target.dataset.file
+        const imagePath = e.target.dataset.path
+        const modal = e.target.dataset.modal
+        document.getElementById(imageName + '_thumbnail').src = imagePath + '/' + imageFile
+        document.getElementById(imageName + '_hidden').value = imageId
+        MicroModal.close(modal);
+    }, )
+    })  
+  </script>
 </x-app-layout>
