@@ -10,6 +10,9 @@ use App\Models\Owner;
 use App\Models\Shop;
 use App\Models\Image;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ProductsStoreRequest;
+use App\Services\Products\ProductsService;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -73,9 +76,13 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductsStoreRequest $request)
     {
-        dd($request);
+        $result = ProductsService::addByProduct($request);
+        if(is_string($result)){
+            return back();
+        }
+        return redirect()->route('owner.products.index')->with(['message' => '商品を登録できました。','status'=>'info']);
     }
 
     /**
