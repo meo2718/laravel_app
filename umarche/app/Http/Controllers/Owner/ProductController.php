@@ -79,7 +79,7 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $result = ProductsService::addByProduct($request);
+        $result = ProductsService::addByProductStore($request);
         if(is_string($result)){
             return back();
         }
@@ -88,27 +88,22 @@ class ProductController extends Controller
 
     /**
      * Show the form for editing the specified resource.
-     *
+     * 
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit(Request $request, $id)
     {
-        if($request->isMethod('get')){
-        $product = Product::findOrFail($id);
-        $quantity = Stock::where('product_id', $product->id)->sum('quantity');
-        //1つのshop,image,categoryは複数のproductをもつのでFKを３つ定義してるのでそれをかく
-        //owner_idのAUTHで絞りつつ、それぞれselectする
-        $shops = Shop::where('owner_id', Auth::id())->select('id', 'name')->get();
-        //orderByで新しい順に並び替え
-        $images = Image::where('owner_id', Auth::id())->select('id', 'title', 'filename')->orderBy('updated_at', 'desc')->get();
-        //リレーション先のprimaryCategoryからとるのでN+1問題回避,secondaryというのはprimarycategoryモデルのメソッド
-        $categories = PrimaryCategory::with('secondary') ->get();
-        return view('owner.products.edit', compact('product', 'quantity', 'shops', 'images', 'categories'));
-        }
-        if($request->isMethod('post')){
-
-        }
+          $product = Product::findOrFail($id);
+          $quantity = Stock::where('product_id', $product->id)->sum('quantity');
+          //1つのshop,image,categoryは複数のproductをもつのでFKを３つ定義してるのでそれをかく
+          //owner_idのAUTHで絞りつつ、それぞれselectする
+          $shops = Shop::where('owner_id', Auth::id())->select('id', 'name')->get();
+          //orderByで新しい順に並び替え
+          $images = Image::where('owner_id', Auth::id())->select('id', 'title', 'filename')->orderBy('updated_at', 'desc')->get();
+          //リレーション先のprimaryCategoryからとるのでN+1問題回避,secondaryというのはprimarycategoryモデルのメソッド
+          $categories = PrimaryCategory::with('secondary')->get();
+          return view('owner.products.edit', compact('product', 'quantity', 'shops', 'images', 'categories'));
     }
 
     /**
@@ -118,9 +113,26 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ProductRequest $request, $id)
     {
-        //
+        $request->validate([
+          'current_quantity' => 'required|integer',
+        ]);
+        $product = Product::findOrFail($id);
+        //ルートパラメータで指定した商品の在庫を$quantityにいれる
+        $quantity = Stock::where('product_id', $product->id)->sum('quantity');
+        //current_quantity=edit画面に表示している値、$quantity＝更新する際に取得した値
+        if($request->current_quantity !== $quantity){
+          //ルートパラメータproductのid取得 
+          $id = $request->route()->parameter('product');
+          return redirect()->route('owner.products.edit', ['product' => $id])->with(['message' => '在庫数が変更されてます。再度確認してください。','status'=>'alert']);
+        }else{
+        $result = ProductsService::addByProductUpdate($request,$product);
+        if(is_string($result)){
+          return back();
+        }
+        return redirect()->route('owner.products.index')->with(['message' => '商品情報を更新しました。','status'=>'info']);
+        }
     }
 
     /**

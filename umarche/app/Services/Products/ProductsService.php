@@ -11,7 +11,7 @@ use Illuminate\Database\Query;
 
 class ProductsService{
 
-  public static function addByProduct($request){
+  public static function addByProductStore($request){
     try {
       DB::beginTransaction();
       $product = Product::create([
@@ -39,6 +39,42 @@ class ProductsService{
       Log::error($e);
       DB::rollback();
       return redirect()->route('owner.products.create');
+    }
+    DB::commit();
+  }
+  public static function addByProductUpdate($request,$product){
+    try {
+      DB::beginTransaction();
+        //左側がview(owner/products/create)からはいってくるname属性、secondaryだけ注意
+        //quantityはstockテーブルなのでここには書かない
+        $product->name = $request->name;
+        $product->information = $request->information;
+        $product->price = $request->price;
+        $product->sort_order = $request->sort_order;
+        $product->shop_id = $request->shop_id;
+        $product->secondary_category_id = $request->category;
+        $product->image1 = $request->image1;
+        $product->image2 = $request->image2;
+        $product->image3 = $request->image3;
+        $product->image4 = $request->image4;
+        $product->image5 = $request->image5;
+        $product->is_selling = $request->is_selling;
+        $product->save();
+
+      if($request->type === '1'){
+        $newQuantity = $request->quantity;
+      }
+      if($request->type === '2'){
+        $newQuantity = $request->quantity * -1;
+      }
+    Stock::create([
+      'product_id' => $product->id,
+      'type' => $request->type,
+      'quantity' => $newQuantity,
+    ]);
+    } catch (Exception $e) {
+      Log::error($e);
+      DB::rollback();
     }
     DB::commit();
   }
