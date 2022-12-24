@@ -28,8 +28,8 @@
                       {{-- 画像アップロードのサムネイルのコンポーネント→productフォルダの中に保存するのでtypeで属性をつける --}}
                       {{-- :filename="$product->imageFirst->filename"とすることで画像名がとれる --}}
                       <x-thumbnail filename="{{$product->imageFirst->filename ?? ''}}" type="products" />
-                      {{-- imageのタイトル表示 --}}
-                      {{-- <div class="text-gray-700">{{ $product->name }}</div> --}}
+                      {{-- productsテーブルのnameカラム表示 --}}
+                      <div class="text-gray-700">{{ $product->name }}</div>
                    </div>
                    </a>
                   </div>
