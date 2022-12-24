@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Owner;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Image;
+use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\UploadImageRequest;
 use App\Services\Image\ImageService;
@@ -115,6 +116,38 @@ class ImageController extends Controller
     {
         //削除処理の前にstorageの中の画像を削除する必要がある
         $image = Image::findOrFail($id);
+        //productで使ってる画像を画像管理画面から削除すると外部キーエラーになる対策
+        //削除したい画像がproductで使われてるか確認する処理
+        $imageInProducts = Product::where('image1', $image->id)
+        ->orWhere('image2',$image->id)
+        ->orWhere('image3',$image->id)
+        ->orWhere('image4',$image->id)
+        ->orWhere('image5',$image->id)->get();
+        //image1~5で画像を使ってるか判定し、使ってたらnullに変更してから削除する
+        if($imageInProducts){
+            $imageInProducts->each(function($product) use($image){
+              if($product->image1 === $image->id){
+                $product->image1 = null;
+                $product->save();
+              }
+              if($product->image2 === $image->id){
+                $product->image2 = null;
+                $product->save();
+              }
+              if($product->image3 === $image->id){
+                $product->image3 = null;
+                $product->save();
+              }
+              if($product->image4 === $image->id){
+                $product->image4 = null;
+                $product->save();
+              }
+              if($product->image5 === $image->id){
+                $product->image5 = null;
+                $product->save();
+              }
+            });
+        }
         //ファイルパス、ファイル名をくっつけて取得
         $filePath = 'public/products/'.$image->filename;
         //ファイルが存在する確認し、なかったら消す

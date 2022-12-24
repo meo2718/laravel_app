@@ -3,6 +3,7 @@
 /public/storage
 /storage/*.key
 /public/css
+/public/js
 /vendor
 .env
 .env.backup
@@ -14,3 +15,7 @@ npm-debug.log
 yarn-error.log
 /.idea
 /.vscode
+*.log
+*.sqlite
+.htaccess
+/storage
