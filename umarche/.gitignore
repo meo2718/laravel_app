@@ -3,9 +3,7 @@
 /public/storage
 /storage/*.key
 /public/css
-css/
 /public/js
-js/
 /vendor
 .env
 .env.backup
@@ -21,4 +19,3 @@ yarn-error.log
 *.sqlite
 .htaccess
 /storage
-/config
