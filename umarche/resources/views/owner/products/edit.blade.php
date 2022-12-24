@@ -62,7 +62,7 @@
                         <div class="p-2 w-1/2 mx-auto">
                           <div class="relative flex justify-around">
                             <div><input type="radio" name="type" value="1" class="mr-2" checked>追加</div>
-                            <div><input type="radio" name="type" value="0" class="mr-2">削減</div>
+                            <div><input type="radio" name="type" value="2" class="mr-2">削減</div>
                           </div>
                         </div>
 
