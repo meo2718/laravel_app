@@ -94,16 +94,16 @@ class ProductController extends Controller
      */
     public function edit(Request $request, $id)
     {
-          $product = Product::findOrFail($id);
-          $quantity = Stock::where('product_id', $product->id)->sum('quantity');
-          //1つのshop,image,categoryは複数のproductをもつのでFKを３つ定義してるのでそれをかく
-          //owner_idのAUTHで絞りつつ、それぞれselectする
-          $shops = Shop::where('owner_id', Auth::id())->select('id', 'name')->get();
-          //orderByで新しい順に並び替え
-          $images = Image::where('owner_id', Auth::id())->select('id', 'title', 'filename')->orderBy('updated_at', 'desc')->get();
-          //リレーション先のprimaryCategoryからとるのでN+1問題回避,secondaryというのはprimarycategoryモデルのメソッド
-          $categories = PrimaryCategory::with('secondary')->get();
-          return view('owner.products.edit', compact('product', 'quantity', 'shops', 'images', 'categories'));
+        $product = Product::findOrFail($id);
+        $quantity = Stock::where('product_id', $product->id)->sum('quantity');
+        //1つのshop,image,categoryは複数のproductをもつのでFKを３つ定義してるのでそれをかく
+        //owner_idのAUTHで絞りつつ、それぞれselectする
+        $shops = Shop::where('owner_id', Auth::id())->select('id', 'name')->get();
+        //orderByで新しい順に並び替え
+        $images = Image::where('owner_id', Auth::id())->select('id', 'title', 'filename')->orderBy('updated_at', 'desc')->get();
+        //リレーション先のprimaryCategoryからとるのでN+1問題回避,secondaryというのはprimarycategoryモデルのメソッド
+        $categories = PrimaryCategory::with('secondary')->get();
+        return view('owner.products.edit', compact('product', 'quantity', 'shops', 'images', 'categories'));
     }
 
     /**
@@ -143,6 +143,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Product::findOrFail($id)->delete();
+        return redirect()->route('owner.products.index')->with(['message' => '商品を削除しました。','status'=>'alert']);
     }
 }
