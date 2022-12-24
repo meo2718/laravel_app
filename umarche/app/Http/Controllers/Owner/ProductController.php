@@ -9,6 +9,7 @@ use App\Models\PrimaryCategory;
 use App\Models\Owner;
 use App\Models\Shop;
 use App\Models\Image;
+use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ProductsStoreRequest;
 use App\Services\Products\ProductsService;
@@ -86,25 +87,28 @@ class ProductController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        if($request->isMethod('get')){
+        $product = Product::findOrFail($id);
+        $quantity = Stock::where('product_id', $product->id)->sum('quantity');
+        //1つのshop,image,categoryは複数のproductをもつのでFKを３つ定義してるのでそれをかく
+        //owner_idのAUTHで絞りつつ、それぞれselectする
+        $shops = Shop::where('owner_id', Auth::id())->select('id', 'name')->get();
+        //orderByで新しい順に並び替え
+        $images = Image::where('owner_id', Auth::id())->select('id', 'title', 'filename')->orderBy('updated_at', 'desc')->get();
+        //リレーション先のprimaryCategoryからとるのでN+1問題回避,secondaryというのはprimarycategoryモデルのメソッド
+        $categories = PrimaryCategory::with('secondary') ->get();
+        return view('owner.products.edit', compact('product', 'quantity', 'shops', 'images', 'categories'));
+        }
+        if($request->isMethod('post')){
+
+        }
     }
 
     /**
