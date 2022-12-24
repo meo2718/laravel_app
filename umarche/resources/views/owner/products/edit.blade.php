@@ -16,6 +16,8 @@
                 {{-- 素材はadmin/owners/createから持ってくる、画像UPの場合enctype="multipart/form-data"つける --}}
                   <form method="post" action="{{ route('owner.products.edit',['product'=>$product->id])}}">
                     @csrf
+                    {{-- リソースルートなので追記 --}}
+                    @method('put')
                       <div class="-m-2">
 
                         <div class="p-2 w-1/2 mx-auto">

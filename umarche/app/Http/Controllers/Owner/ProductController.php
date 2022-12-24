@@ -11,7 +11,7 @@ use App\Models\Shop;
 use App\Models\Image;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\ProductsStoreRequest;
+use App\Http\Requests\ProductRequest;
 use App\Services\Products\ProductsService;
 use Illuminate\Support\Facades\DB;
 
@@ -77,7 +77,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductsStoreRequest $request)
+    public function store(ProductRequest $request)
     {
         $result = ProductsService::addByProduct($request);
         if(is_string($result)){
