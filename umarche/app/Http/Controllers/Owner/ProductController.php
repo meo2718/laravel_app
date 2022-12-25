@@ -121,7 +121,8 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         //ルートパラメータで指定した商品の在庫を$quantityにいれる
         $quantity = Stock::where('product_id', $product->id)->sum('quantity');
-        //current_quantity=edit画面に表示している値、$quantity＝更新する際に取得した値
+        //current_quantity=edit画面に表示している値(在庫数)、$quantity＝更新する際に取得した値(数量)
+        //edit画面編集時、他のユーザーが購入して在庫が変わった場合、リダイレクトする処理
         if($request->current_quantity !== $quantity){
           //ルートパラメータproductのid取得 
           $id = $request->route()->parameter('product');
