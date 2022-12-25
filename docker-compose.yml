@@ -1,40 +1,58 @@
 version: '3'
 services: 
+  # php-apacheコンテナ
   web_1:
     container_name: laravel_umarche
-    build: ./web_umarche
+    # Dockerfileを使って、コンテナをビルドするpath。web_umarcheディレクトリに宣言されたDockerfileがコンテナのビルドに使用される。
+    build: ./web_umarche/app
+    # php-apacheコンテナの前にまずDBコンテナをビルドする必要があることをDockerに認識
     depends_on: 
       - db
+    # コンテナとホスト側のディレクトリをマウントする
     volumes: 
+      # laravelのソースが入るpath
       - ./umarche/:/var/www/html/
-      - ./web_umarche/default.conf:/etc/apache2/sites-enabled/000-default.conf
-      - ./web_umarche/php.ini:/usr/local/etc/php/php.ini
+      # Apacheによりデフォルトで有効化されている000-default.confホストとアプリケーションの仮想ホストの設定をリンク
+      - ./web_umarche/app/default.conf:/etc/apache2/sites-enabled/000-default.conf
+      # php.iniにxdebugのport設定
+      - ./web_umarche/app/php.ini:/usr/local/etc/php/php.ini
+    # コンテナ内部80番portを開いて、ホストの8005番にポートフォワーディング
     ports: 
       - "8005:80"
   phpmyadmin:
     container_name: phpmyadmin
     image: phpmyadmin
     restart: always
+    #コンテナ内部80番portを開いて、ホストの8080番にポートフォワーディング
     ports:
       - "8080:80"
+    #自動ログイン環境設定、host、ログイン情報指定
     environment:
+     # 1に設定すると任意のサーバーへの接続が許可される 
      - PMA_ARBITRARY=1
+     # SQLサーバーのportの設定
      - PMA_HOST=db:3306
+     # SQLサーバーに接続するユーザー名
      - PMA_USER=root
+     # SQLサーバーに接続するユーザーのパスワード
      - PMA_PASSWORD=rootroot
   db:
     container_name: mysql
+    # DockerHubからMySQL5.7イメージをDLしてくる指定
     image: mysql:5.7
+    # 起動時のコマンド
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    # コンテナ内の環境変数→.envにも記載
     environment:
       MYSQL_DATABASE: laravel_umarche
       MYSQL_USER: docker
       MYSQL_PASSWORD: root
       MYSQL_ROOT_PASSWORD: rootroot
       TZ: Asia/Tokyo
+    # mysqlはデフォルトで3306port
     ports: 
       - "3311:3306"
+    # 設定ファイルとMySQLのデータが保存されるpathをマウント。コンテナは基本的に起動時に変更されてもコンテナ自体が止まるとデータが消えてしまうため、保存しておきたいものはホストマシンと同期しておく必要がある。
     volumes: 
-      - umarche_laravel:/var/lib/mysql
-volumes: 
-  umarche_laravel: {}
+      - ./web_umarche/db/data:/var/lib/mysql
+      - ./web_umarche/db/my.cnf:/etc/mysql/conf.d/my.cnf
