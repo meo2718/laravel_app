@@ -61,9 +61,11 @@ class ProductsService{
         $product->is_selling = $request->is_selling;
         $product->save();
 
+      //edit.bladeのラジオボタンのvalue属性が1だったら
       if($request->type === \Constant::PRODUCT_LIST['add']){
         $newQuantity = $request->quantity;
       }
+      //edit.bladeのラジオボタンのvalue属性が2だったら
       if($request->type === \Constant::PRODUCT_LIST['reduce']){
         $newQuantity = $request->quantity * -1;
       }
