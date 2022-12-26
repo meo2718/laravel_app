@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ComponentTestController;
 use App\Http\Controllers\LifeCycleTestController;
+use App\Http\Controllers\User\ItemController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,11 +20,12 @@ Route::get('/', function () {
     return view('user.welcome');
 });
 
-Route::get('/dashboard', function () {
-    //prefix設定
-    return view('user.dashboard');
-    //guard権限:を付与、→usersの権限を持ってたらダッシュボードへ
-})->middleware(['auth:users'])->name('dashboard');
+//userのルート 
+    Route::middleware('auth:users')->group(function(){
+        //'/'で一覧画面遷移→ログアウト後'/'に遷移するようにRouteServiceProviderに記載
+        Route::get('/', [ItemController::class, 'index'])->name('items.index');
+        Route::match(['get','post'],'edit/{shop}', [ItemController::class, 'edit'])->name('items.edit');
+});
 
 Route::get('/component-test1', [ComponentTestController::class, 'showComponent1']);
 Route::get('/component-test2', [ComponentTestController::class, 'showComponent2']);

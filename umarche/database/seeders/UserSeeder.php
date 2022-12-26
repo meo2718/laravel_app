@@ -2,13 +2,11 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
-//クエリビルダ
 use Illuminate\Support\Facades\DB;
-//暗号化
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Seeder;
 
-class AdminSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +15,7 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('admins')->insert([
+        DB::table('users')->insert([
             'name' => 'test',
             'email' => 'test1@test.com',
             'password' => Hash::make('qwer1234'),
