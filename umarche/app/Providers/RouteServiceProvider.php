@@ -17,7 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      * User,Admin,Ownerそれぞれのログイン後のリダイレクト先パスの設定
      * @var string
      */
-    public const HOME = '/dashboard';
+    public const HOME = '/';
     public const OWNER_HOME = '/owner/dashboard'; 
     public const ADMIN_HOME = '/admin/dashboard';
 
