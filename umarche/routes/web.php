@@ -26,6 +26,7 @@ Route::get('/', function () {
 Route::middleware('auth:users')->group(function(){
     //'/'で一覧画面遷移→ログアウト後'/'に遷移するようにRouteServiceProviderに記載
     Route::get('/', [ItemController::class, 'index'])->name('items.index');
+    Route::get('show/{item}', [ItemController::class, 'show'])->name('items.show');
     Route::match(['get','post'],'edit/{shop}', [ItemController::class, 'edit'])->name('items.edit');
 });
 //googleログインのルート

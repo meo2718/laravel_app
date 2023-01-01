@@ -14,8 +14,8 @@
                    @foreach($products as $product)
                   {{-- 1/4で表示 レスポンシブでスマホの場合p-2,タブレットだったらp-4--}}
                   <div class="w-1/4 p-2 md:p-4">
-                  {{-- クリックしたらedit画面に飛ぶようにする --}}
-                   <a href="">
+                  {{-- クリックしたら商品詳細画面に飛ぶようにする --}}
+                   <a href="{{route('user.items.show',['item'=>$product->id])}}">
                     {{-- 角をとったパディング上下左右4方向にボーダーをいれる --}}
                    <div class="border rounded-md p-2 md:p-4">
                     

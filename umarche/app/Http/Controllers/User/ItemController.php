@@ -9,6 +9,14 @@ use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
+    public function __construct()
+    {
+        //ガード設定
+        $this->middleware('auth:users'); 
+        //在庫が1以上か、販売中かどうかのチェックする処理
+
+    }
+
     public function index()
     {
         //Stockの合計をグループ化して数量が1以上 という条件を作る
@@ -37,5 +45,11 @@ class ItemController extends Controller
         //dd($stocks,$products);
 
         return view('user.index', compact('products'));
+    }
+
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view ('user.show', compact('product'));
     }
 }
