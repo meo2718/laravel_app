@@ -13,8 +13,57 @@
                  <div class="md:flex md:justify-around">
                      {{-- 商品画像表示 --}}
                      <div class="md:w-1/2">
-                         <x-thumbnail filename="{{$product->imageFirst->filename ?? ''}}" type="products" />
-                     </div>
+                         <!-- Slider main container -->
+                     <div class="swiper-container">
+                         <!-- Additional required wrapper -->
+                         <div class="swiper-wrapper">
+                         <!-- Slides 画像がある場合とない場合-->
+                         <div class="swiper-slide">
+                            @if ($product->imageFirst->filename !== null)
+                            <img src="{{ asset('storage/products/' . $product->imageFirst->filename )}}">
+                            @else
+                            <img src="">
+                            @endif
+                         </div>
+                         <div class="swiper-slide">
+                            @if ($product->imageSecond->filename !== null)
+                            <img src="{{ asset('storage/products/' . $product->imageSecond->filename )}}">
+                            @else
+                            <img src="">
+                            @endif
+                         </div>
+                         <div class="swiper-slide">
+                            @if ($product->imageThird->filename !== null)
+                            <img src="{{ asset('storage/products/' . $product->imageThird->filename )}}">
+                            @else
+                            <img src="">
+                            @endif
+                         </div>
+                         <div class="swiper-slide">
+                            @if ($product->imageFourth->filename !== null)
+                            <img src="{{ asset('storage/products/' . $product->imageFourth->filename )}}">
+                            @else
+                            <img src="">
+                            @endif
+                         </div>
+                         <div class="swiper-slide">
+                            @if ($product->imageFifth->filename !== null)
+                            <img src="{{ asset('storage/products/' . $product->imageFifth->filename )}}">
+                            @else
+                            <img src="">
+                            @endif
+                         </div>
+                         ...
+                         </div>
+                         <!-- If we need pagination -->
+                         <div class="swiper-pagination"></div>
+                         <!-- If we need navigation buttons -->
+                         <div class="swiper-button-prev"></div>
+                         <div class="swiper-button-next"></div>
+                         <!-- If we need scrollbar -->
+                         <div class="swiper-scrollbar"></div>
+                    </div>
+                    </div>
                      {{-- カテゴリー名、商品名、商品情報表示 --}}
                      <div class="md:w-1/2 ml-4">
                          <h2 class="mb-4 text-sm title-font text-gray-500 tracking-widest">{{ $product->category->name}}</h2>
@@ -48,4 +97,6 @@
           </div>
       </div>
   </div>
+  {{-- sliderの読み込み --}}
+  <script src="{{ mix('js/swiper.js') }}"> </script>
 </x-app-layout>
