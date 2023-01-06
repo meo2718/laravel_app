@@ -79,11 +79,13 @@
                               {{-- 数量表示 --}}
                               <span class="mr-3">数量</span>
                               <div class="relative">
-                                  <select class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
-                                    <option>SM</option>
-                                     <option>M</option>
-                                     <option>L</option>
-                                     <option>XL</option>
+                                {{-- name属性をつけてpost通信でDBへ保存 --}}
+                                  <select name="quantity" class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-pink-200 focus:border-pink-500 text-base pl-3 pr-10">
+                                    {{-- 数量1~4を表示→　1からスタートして1ずつ増えていって$quantityと同じ数になったらとめる --}}
+                                    @for($i = 1; $i <= $quantity; $i++)
+                                    {{-- valueでpost通信として渡す。$iは表示する場所 --}}
+                                    <option value="{{$i}}">{{$i}}</option> 
+                                    @endfor
                                   </select>
                               </div>
                             </div>
