@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ComponentTestController;
 use App\Http\Controllers\LifeCycleTestController;
 use App\Http\Controllers\User\ItemController;
+use App\Http\Controllers\User\CartController;
 use App\Http\Controllers\LoginWithGoogleController;
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,13 @@ Route::middleware('auth:users')->group(function(){
     Route::get('show/{item}', [ItemController::class, 'show'])->name('items.show');
     Route::match(['get','post'],'edit/{shop}', [ItemController::class, 'edit'])->name('items.edit');
 });
+
+//cartのルート
+Route::prefix('cart')-> 
+    middleware('auth:users')->group(function(){
+        Route::post('add', [CartController::class, 'add'])->name('cart.add');
+});
+
 //googleログインのルート
 Route::get("auth/google", [LoginWithGoogleController::class,"redirectToGoogle",]);
 Route::get("auth/google/callback", [LoginWithGoogleController::class,"googleCallback",]);
