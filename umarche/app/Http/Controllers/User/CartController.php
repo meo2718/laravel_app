@@ -21,8 +21,8 @@ class CartController extends Controller
             //productのquantityをとpriceをかけて合計金額をだしてtotalpriceに＋する→中間テーブルなのでpivotをはさむ
             $totalPrice += $product->price * $product->pivot->quantity;
         }
-        dd($products,$totalPrice);
-        return view('user.cart.index',compact('products','totalprice'));
+        //dd($products,$totalPrice);
+        return view('user.cart',compact('products','totalPrice'));
     }
 
     public function add(Request $request)
