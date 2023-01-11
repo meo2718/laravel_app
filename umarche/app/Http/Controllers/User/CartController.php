@@ -108,12 +108,19 @@ class CartController extends Controller
             //1回払
             'mode' => 'payment',
             //支払い成功後のリダイレクト先
-            'success_url' => route('user.items.index'),
+            'success_url' => route('user.cart.success'),
             'cancel_url' => route('user.cart.index'),
         ]);
         //公開可能キーの取得
         $publicKey = env('STRIPE_PUBLIC_KEY');
         //viewへ2つのキーが入った変数を渡す
         return view('user.checkout',compact('session', 'publicKey'));
+    }
+
+    public function success()
+    {
+        //決済成功時、cartを削除する
+        Cart::where('user_id', Auth::id())->delete();
+        return redirect()->route('user.items.index');
     }
 }

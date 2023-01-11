@@ -39,6 +39,8 @@ Route::prefix('cart')->
         Route::post('delete/{item}', [CartController::class, 'delete'])->name('cart.delete');
         //決済処理のルート
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+        //決済成功時、cartを削除するルート
+        Route::get('success', [CartController::class, 'success'])->name('cart.success');
 });
 
 //googleログインのルート
