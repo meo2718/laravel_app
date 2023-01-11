@@ -71,15 +71,20 @@ class CartController extends Controller
             }else{
                 //商品情報をstripe側に受け取れる形にして渡す→stripe側で用意してるパラメータを使用
                 //cart内の商品が在庫数より少なければ購入できる
+                //2022年8月1日のAPI仕様変更
                 $lineItem = [
-                    'name' => $product->name,
-                    'description' => $product->information,
-                    'amount' => $product->price,
-                    'currency' => 'jpy',
+                    'price_data' => [
+                    'unit_amount' => $product->price,
+                    'currency' => 'JPY',
+ 
+                        'product_data' => [
+                        'name' => $product->name,
+                        'description' => $product->information,
+                        ],
+                    ],
                     'quantity' => $product->pivot->quantity,
                 ];
-                //$lineItemsへ追加
-                array_push($lineItems,$lineItem);
+                array_push($lineItems, $lineItem);
             }
         }
         //dd($lineItems);
@@ -92,7 +97,7 @@ class CartController extends Controller
             'quantity' => $product->pivot->quantity * -1
             ]);
         }
-        dd('test');
+        //dd('test');
         //シークレットキーを取得、envヘルパ関数でとってこれる
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
         //支払い方法やカートに入った商品情報、リダイレクト先などを$sessionへ格納
