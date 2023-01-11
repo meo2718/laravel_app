@@ -41,6 +41,8 @@ Route::prefix('cart')->
         Route::get('checkout', [CartController::class, 'checkout'])->name('cart.checkout');
         //決済成功時、cartを削除するルート
         Route::get('success', [CartController::class, 'success'])->name('cart.success');
+        //決済キャンセル時、cartを戻すルート
+        Route::get('cancel', [CartController::class, 'cancel'])->name('cart.cancel');
 });
 
 //googleログインのルート
