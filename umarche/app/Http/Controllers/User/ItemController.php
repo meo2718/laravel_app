@@ -14,7 +14,18 @@ class ItemController extends Controller
     {
         //ガード設定
         $this->middleware('auth:users'); 
-        //在庫が1以上か、販売中かどうかのチェックする処理
+        //is_selling=0の商品のIDをURLに直接いれたら404を返す処理
+        $this->middleware(function ($request, $next) {
+            $id = $request->route()->parameter('item');
+            if(!is_null($id)){
+            //availableItemsに$requestではいってきた$idが存在しているかどうかチェック
+            $itemId = Product::availableItems()->where('products.id',$id)->exists();
+              if(!$itemId){
+              abort(404);
+              }
+            }
+            return $next($request);
+        });
 
     }
 
