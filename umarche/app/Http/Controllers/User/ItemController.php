@@ -29,9 +29,11 @@ class ItemController extends Controller
 
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::availableItems()->get();
+        //商品一覧クエリ、表示順クエリ→product.phpで定義
+        //$request->sortでviewとモデルへ渡す
+        $products = Product::availableItems()->sortOrder($request->sort)->get();
         return view('user.index', compact('products'));
     }
 
