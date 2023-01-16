@@ -33,7 +33,8 @@ class ItemController extends Controller
     {
         //商品一覧クエリ、表示順クエリ→product.phpで定義
         //$request->sortでviewとモデルへ渡す
-        $products = Product::availableItems()->sortOrder($request->sort)->get();
+        //ページネーション→user/indexへpaginationを渡す。ログイン後など、paginationがnullの場合表示件数を20件にする。
+        $products = Product::availableItems()->sortOrder($request->sort)->paginate($request->pagination ?? '20');
         return view('user.index', compact('products'));
     }
 
