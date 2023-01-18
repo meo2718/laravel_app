@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Stock;
+use App\Models\PrimaryCategory;
 use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
@@ -31,11 +32,13 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
+        ddd($request);
+        $categories = PrimaryCategory::with('secondary')->get();
         //商品一覧クエリ、表示順クエリ→product.phpで定義
         //$request->sortでviewとモデルへ渡す
         //ページネーション→user/indexへpaginationを渡す。ログイン後など、paginationがnullの場合表示件数を20件にする。
         $products = Product::availableItems()->sortOrder($request->sort)->paginate($request->pagination ?? '20');
-        return view('user.index', compact('products'));
+        return view('user.index', compact('products','categories'));
     }
 
     public function show($id)
