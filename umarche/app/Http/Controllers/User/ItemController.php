@@ -32,12 +32,15 @@ class ItemController extends Controller
 
     public function index(Request $request)
     {
-        ddd($request);
+        //ddd($request);
         $categories = PrimaryCategory::with('secondary')->get();
         //商品一覧クエリ、表示順クエリ→product.phpで定義
         //$request->sortでviewとモデルへ渡す
         //ページネーション→user/indexへpaginationを渡す。ログイン後など、paginationがnullの場合表示件数を20件にする。
-        $products = Product::availableItems()->sortOrder($request->sort)->paginate($request->pagination ?? '20');
+        $products = Product::availableItems()
+        ->selectCategory($request->category ?? '0')
+        ->sortOrder($request->sort)
+        ->paginate($request->pagination ?? '20');
         return view('user.index', compact('products','categories'));
     }
 
