@@ -41,7 +41,7 @@ class ItemController extends Controller
         //scopeSelectCategory
         ->selectCategory($request->category ?? '0')
         //scopeSearchKeyword
-        ->scopeSearchKeyword($request->keyword)
+        ->searchKeyword($request->keyword)
         ->sortOrder($request->sort)
         ->paginate($request->pagination ?? '20');
         return view('user.index', compact('products','categories'));

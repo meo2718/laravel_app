@@ -102,7 +102,7 @@
                   {{-- 商品一覧表示 --}}
                    @foreach($products as $product)
                      <div class="w-full lg:w-1/4 p-2 md:p-4">
-                      {-- クリックしたら商品詳細画面に飛ぶようにする --}}
+                      {{-- クリックしたら商品詳細画面に飛ぶようにする --}}
                       <a href="{{ route('user.items.show', ['item' => $product->id ])}}">
                      <div class="border rounded-md p-2 md:p-4">
                       {{-- 画像アップロードのサムネイルのコンポーネント→productフォルダの中に保存するのでtypeで属性をつける --}}
