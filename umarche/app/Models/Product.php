@@ -109,9 +109,31 @@ class Product extends Model
 
     public function scopeSelectCategory($query, $categoryId)
     {
+        //0でなかったらwhereで検索
         if($categoryId !== '0')
         {
             return $query->where('secondary_category_id', $categoryId); 
+        } else {
+            return;
+        }
+    }
+    //キーワード検索メソッド
+    public function scopeSearchKeyword($query, $keyword)
+    {
+        //キーワードが空の場合はNULLかどうかで判定→NULLだったらreturnをかえす
+        if(!is_null($keyword)) {
+        //複数の単語がありえる可能性があるので、複数の単語をそれぞれ切り分けて、それぞれforeachでwhere検索をする
+        //mb_convert_kana→全角スペースがあったら半角にかえる
+        $spaceConvert = mb_convert_kana($keyword,'s');
+        //正規表現でキーワードをそれぞれ空白で区切る
+        $keywords = preg_split('/[\s]+/', $spaceConvert,-1,PREG_SPLIT_NO_EMPTY); 
+        foreach($keywords as $word) //単語をループで回す
+        {
+        //あいまい検索
+        //like句を使い、％で語句を挟む。文字が入ってたら検索
+        $query->where('products.name','like','%'.$word.'%');
+        }
+        return $query; 
         } else {
             return;
         }

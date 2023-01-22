@@ -9,7 +9,7 @@
                       <div class="lg:flex items-center">
                         {{-- select→複数の中から一つ選ぶ --}}
                           <select name="category" class="mb-2 lg:mb-0 lg:mr-2">
-                            {{-- value=0のときすべて --}}
+                            {{-- value=0のときすべて 画面読み込み時選んだカテゴリーがもとに戻るので、getパラメータの値をとる--}}
                               <option value="0" @if(\Request::get('category') === '0') 
                               selected 
                               @endif>全て
@@ -22,6 +22,7 @@
                                @foreach($category->secondary as $secondary)
                                  {{-- selectの中身はoptionとして表示する必要があり、中身として$secondary->nameとする --}}
                                  <option value="{{ $secondary->id}}" 
+                                  {{-- getパラメータは文字列、secondaryidは数字で型が違うので==とする --}}
                                   @if(\Request::get('category') == $secondary->id) 
                                   selected 
                                   @endif>

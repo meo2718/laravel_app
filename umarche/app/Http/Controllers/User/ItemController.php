@@ -38,7 +38,10 @@ class ItemController extends Controller
         //$request->sortでviewとモデルへ渡す
         //ページネーション→user/indexへpaginationを渡す。ログイン後など、paginationがnullの場合表示件数を20件にする。
         $products = Product::availableItems()
+        //scopeSelectCategory
         ->selectCategory($request->category ?? '0')
+        //scopeSearchKeyword
+        ->scopeSearchKeyword($request->keyword)
         ->sortOrder($request->sort)
         ->paginate($request->pagination ?? '20');
         return view('user.index', compact('products','categories'));
