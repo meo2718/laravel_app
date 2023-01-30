@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Models\User;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Cart\CartService;
 
 class CartController extends Controller
 {
@@ -55,6 +56,11 @@ class CartController extends Controller
 
     public function checkout()
     {
+        ///カートの中のログインしてるユーザーが設定している商品を取得
+        $items = Cart::where('user_id', Auth::id())->get();
+        $products = CartService::getItemsInCart($items);
+        ///
+
         $user = User::findOrFail(Auth::id());
         //userに紐づくproductsを取得→多対多のリレーション
         $products = $user->products;
