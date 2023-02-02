@@ -1,6 +1,9 @@
 <?php
 namespace App\Services\Cart;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Product;
+use App\Models\Cart;
+
 class CartService
 {
   public static function getItemsInCart($items){
