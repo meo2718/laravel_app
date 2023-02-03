@@ -40,7 +40,7 @@ class ItemController extends Controller
         //Mail::to('test@example.com')->send(new TestMail());
         
         //非同期送信
-        SendThanksMail::dispatch();
+        //SendThanksMail::dispatch();
         $categories = PrimaryCategory::with('secondary')->get();
         //商品一覧クエリ、表示順クエリ→product.phpで定義
         //$request->sortでviewとモデルへ渡す

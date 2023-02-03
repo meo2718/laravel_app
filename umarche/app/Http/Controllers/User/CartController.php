@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Cart\CartService;
+use App\Jobs\SendThanksMail;
+use App\Jobs\SendOrderedMail;
 
 class CartController extends Controller
 {
@@ -56,11 +58,6 @@ class CartController extends Controller
 
     public function checkout()
     {
-        ///カートの中のログインしてるユーザーが設定している商品を取得
-        $items = Cart::where('user_id', Auth::id())->get();
-        $products = CartService::getItemsInCart($items);
-        ///
-
         $user = User::findOrFail(Auth::id());
         //userに紐づくproductsを取得→多対多のリレーション
         $products = $user->products;
@@ -125,6 +122,19 @@ class CartController extends Controller
 
     public function success()
     {
+        ///カートの中のログインしてるユーザーが設定している商品を取得
+        $items = Cart::where('user_id', Auth::id())->get();
+        $products = CartService::getItemsInCart($items);
+        $user = User::findOrFail(Auth::id());
+        
+        SendThanksMail::dispatch($products, $user);
+        //オーナー向けメール(複数送信)
+        foreach($products as $product)
+        {
+          SendOrderedMail::dispatch($product, $user);
+        }
+            
+        //dd('メール送信テスト');
         //決済成功時、cartを削除する
         Cart::where('user_id', Auth::id())->delete();
         return redirect()->route('user.items.index');
