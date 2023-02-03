@@ -10,7 +10,7 @@ use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Cart\CartService;
 use App\Jobs\SendThanksMail;
-
+use App\Jobs\SendOrderedMail;
 
 class CartController extends Controller
 {
@@ -64,6 +64,12 @@ class CartController extends Controller
         ///
         $user = User::findOrFail(Auth::id());
         SendThanksMail::dispatch($products, $user);
+        //オーナー向けメール(複数送信)
+        foreach($products as $product)
+        {
+          SendOrderedMail::dispatch($product, $user);
+        }
+            
         dd('メール送信テスト');
 
         $user = User::findOrFail(Auth::id());

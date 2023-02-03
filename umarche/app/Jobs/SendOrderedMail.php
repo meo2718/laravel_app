@@ -8,19 +8,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderedMail;
 
 class SendOrderedMail implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public $product;
+    public $user;
+
+    public function __construct($product,$user)
     {
-        //
+        $this->product = $product;
+        $this->user = $user;
     }
 
     /**
@@ -30,6 +31,7 @@ class SendOrderedMail implements ShouldQueue
      */
     public function handle()
     {
-        //
+        //user情報からemailの列を取得
+        Mail::to($this->product['email'])->send(new OrderedMail($this->product, $this->user));
     }
 }
