@@ -1,23 +1,23 @@
-##画像のダミーデータ
+## 画像のダミーデータ
 public/imagesフォルダ内に
 sample1.jpg~sample7.jpgとして保存しています。
 
-php artisan storage:linkでstorageフォルダにリンク後、
+`php artisan storage:link`でstorageフォルダにリンク後、
 
-storage/app/public/picturesフォルダ内に保存すると表示されます。
+`storage/app/public/pictures`フォルダ内に保存すると表示されます。
 
-ショップ画像も表示する場合は、storage/app/public/shopsフォルダを作成し
+ショップ画像も表示する場合は、`storage/app/public/shops`フォルダを作成し
 画像を保存してください。
 
-##決済
+## 決済
 決済のテストとしてstripeを利用しています。
-必要な場合は.envにstripeの情報を追記してください。
+必要な場合は`.env`にstripeの情報を追記してください。
 
-##メール
+## メール
 メールテストとしてmailtrapを利用しています。
-必要な場合は、.envにmailtrapの情報を追記してください。
+必要な場合は、`.env`にmailtrapの情報を追記してください。
 
-メーリ処理には時間がかかるので、キューを使用しています。
+メール処理には時間がかかるので、キューを使用しています。
 
-必要な場合は、php artisan queue:workでワーカーを立ち上げて
+必要な場合は、`php artisan queue:work`でワーカーを立ち上げて
 動作確認するようにしてください。
