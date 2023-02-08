@@ -803,14 +803,14 @@ select{
 .mt-1{
   margin-top: 0.25rem;
 }
-.ml-4{
-  margin-left: 1rem;
-}
 .mt-32{
   margin-top: 8rem;
 }
 .mb-8{
   margin-bottom: 2rem;
+}
+.mb-2{
+  margin-bottom: 0.5rem;
 }
 .ml-auto{
   margin-left: auto;
@@ -830,11 +830,11 @@ select{
 .-mr-2{
   margin-right: -0.5rem;
 }
-.mb-2{
-  margin-bottom: 0.5rem;
-}
 .mt-2{
   margin-top: 0.5rem;
+}
+.ml-4{
+  margin-left: 1rem;
 }
 .mt-8{
   margin-top: 2rem;
@@ -941,11 +941,11 @@ select{
 .w-8{
   width: 2rem;
 }
-.w-28{
-  width: 7rem;
-}
 .w-40{
   width: 10rem;
+}
+.w-28{
+  width: 7rem;
 }
 .max-w-7xl{
   max-width: 80rem;
@@ -953,11 +953,11 @@ select{
 .max-w-sm{
   max-width: 24rem;
 }
-.max-w-6xl{
-  max-width: 72rem;
-}
 .max-w-xl{
   max-width: 36rem;
+}
+.max-w-6xl{
+  max-width: 72rem;
 }
 .flex-1{
   flex: 1 1 0%;
@@ -1031,6 +1031,11 @@ select{
 .justify-around{
   justify-content: space-around;
 }
+.space-x-2 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
 .space-x-8 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
   margin-right: calc(2rem * var(--tw-space-x-reverse));
@@ -1040,21 +1045,6 @@ select{
   --tw-space-y-reverse: 0;
   margin-top: calc(0.25rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(0.25rem * var(--tw-space-y-reverse));
-}
-.space-x-2 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-}
-.space-x-4 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-x-reverse: 0;
-  margin-right: calc(1rem * var(--tw-space-x-reverse));
-  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
-}
-.space-x-1 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.25rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .overflow-auto{
   overflow: auto;
@@ -1877,17 +1867,14 @@ select{
   .lg\:flex{
     display: flex;
   }
+  .lg\:w-1\/4{
+    width: 25%;
+  }
   .lg\:w-2\/3{
     width: 66.666667%;
   }
   .lg\:w-1\/2{
     width: 50%;
-  }
-  .lg\:w-1\/4{
-    width: 25%;
-  }
-  .lg\:justify-center{
-    justify-content: center;
   }
   .lg\:justify-around{
     justify-content: space-around;
